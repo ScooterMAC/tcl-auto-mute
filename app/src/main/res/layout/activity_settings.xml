@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent">
+    <LinearLayout android:orientation="vertical" android:padding="12dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Event Log" android:textSize="16sp"/>
+        <TextView android:id="@+id/logView" android:layout_width="match_parent" android:layout_height="200dp" android:background="#EEEEEE" android:padding="8dp" android:textIsSelectable="true"/>
+
+        <Button android:id="@+id/clearLogBtn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Clear Log" android:layout_marginTop="8dp"/>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sensitivity" android:layout_marginTop="16dp"/>
+        <com.google.android.material.slider.Slider android:id="@+id/sensitivitySliderSettings" android:layout_width="match_parent" android:layout_height="wrap_content" android:value="0.5" android:valueFrom="0.0" android:valueTo="1.0"/>
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="About" android:textSize="16sp" android:layout_marginTop="16dp"/>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="This app listens to the TV via microphone and mutes Roku TVs during commercials. Use responsibly."/>
+
+    </LinearLayout>
+</ScrollView>

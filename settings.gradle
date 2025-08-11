@@ -1,0 +1,2 @@
+rootProject.name = "AdMuterV3"
+include(":app")
