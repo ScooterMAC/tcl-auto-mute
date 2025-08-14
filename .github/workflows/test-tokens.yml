@@ -1,0 +1,46 @@
+name: Test Gist & PAT Tokens
+
+on:
+  workflow_dispatch: # Manual run from Actions tab
+
+jobs:
+  test-tokens:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout repo without default token so we can use PAT_TOKEN
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # --- GIST TEST ---
+      - name: Create test file for gist
+        run: echo "Hello from GitHub Actions — Gist token test at $(date)" > gist_test.txt
+
+      - name: Upload to private Gist
+        run: |
+          GIST_RESPONSE=$(curl -s -X POST "https://api.github.com/gists" \
+            -H "Authorization: token ${{ secrets.GIST_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"description\": \"[TEST] Gist Token Check\",
+              \"public\": false,
+              \"files\": {
+                \"gist_test.txt\": {\"content\": $(cat gist_test.txt | jq -Rsa .)}
+              }
+            }")
+          echo "$GIST_RESPONSE"
+          GIST_URL=$(echo "$GIST_RESPONSE" | jq -r '.html_url')
+          echo "Gist created: $GIST_URL"
+
+      # --- PAT TEST ---
+      - name: Create test file for repo push
+        run: echo "PAT token test at $(date)" > pat_test.txt
+
+      - name: Commit and push test file
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add pat_test.txt
+          git commit -m "Add PAT token test file"
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:main
